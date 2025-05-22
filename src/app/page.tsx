@@ -1,20 +1,32 @@
 "use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { Loader2 } from "lucide-react";
 
-const signIn = async () => {
-  const data = await authClient.signIn.social({
-    provider: "google",
-  });
-};
+function LandingPage() {
+  const router = useRouter();
+  const { data, isPending } = authClient.useSession();
 
-function Home() {
-  return (
-    <div>
-      <h2>Hi</h2>
+  useEffect(() => {
+    if (isPending) return;
+    if (data) {
+      router.push("/dashboard");
+    } else {
+      router.push("/auth");
+    }
+  }, [data, isPending, router]);
 
-      <button onClick={() => signIn()}>Sign in</button>
-    </div>
-  );
+  if (isPending) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="animate-spin h-6 w-6 text-muted-foreground" />
+      </div>
+    );
+  }
+
+  return null;
 }
 
-export default Home;
+export default LandingPage;
