@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 export async function sendMagicLinkEmail({
   email,
@@ -10,11 +10,11 @@ export async function sendMagicLinkEmail({
   url: string;
 }) {
   const transporter = nodemailer.createTransport({
-    host: 'mail.spacemail.com',
+    host: "mail.spacemail.com",
     port: 465,
     secure: true,
     auth: {
-      user: 'no-reply@botworld.pro',
+      user: "no-reply@botworld.pro",
       pass: process.env.EMAIL_PASS,
     },
   });
@@ -22,7 +22,7 @@ export async function sendMagicLinkEmail({
   const mailOptions = {
     from: `"BotWorld 🪄" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: 'Your Magic Link is Here! ✨',
+    subject: "Your Magic Link is Here! ✨",
     html: `
       <div style="font-family: 'Poppins', sans-serif; padding: 24px; background: #fefefe; border-radius: 12px; border: 1px solid #eee;">
         <h2 style="color: #222;">Hey there 👋</h2>
@@ -44,6 +44,6 @@ export async function sendMagicLinkEmail({
     console.log(`✅ Magic link sent to ${email}`);
   } catch (err) {
     console.error(`❌ Failed to send magic link:`, err);
-    throw new Error('Could not send magic link');
+    throw new Error("Could not send magic link");
   }
 }
