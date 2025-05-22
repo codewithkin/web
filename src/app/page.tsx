@@ -1,11 +1,11 @@
 "use client";
-import { authClient } from "@/lib/auth-client"
+import { authClient } from "@/lib/auth-client";
 
 const signIn = async () => {
   const data = await authClient.signIn.social({
-    provider: "google"
-  })
-}
+    provider: "google",
+  });
+};
 
 function Home() {
   return (
@@ -14,7 +14,7 @@ function Home() {
 
       <button onClick={() => signIn()}>Sign in</button>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

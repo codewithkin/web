@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionCookie } from "better-auth/cookies";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
-  const sessionCookie = getSessionCookie(request);
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  if (!sessionCookie) {
+  if (!session) {
     return NextResponse.redirect(new URL("/auth", request.url));
   }
 
@@ -12,5 +15,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!^$|auth|_next/static|_next/image|favicon.ico).*)"],
+  runtime: "nodejs",
+  matcher: [
+    /*
+     * Match all request paths except for:
+     * 1. /auth (sign in, sign up, etc.)
+     * 2. /api routes (since they're handled by API Routes)
+     */
+    "/((?!auth|api).)*",
+  ],
 };
